@@ -9,7 +9,7 @@ public class CommandRegisterer {
     private static ArrayList<Command> commands = new ArrayList<>();
     static {
         commands.add(new Ping());
-        commands.add(new Friends()); //Part of the FriendsCommands package
+        commands.add(new Friends());
     }
 
     public static ArrayList<Command> getCommands() {
