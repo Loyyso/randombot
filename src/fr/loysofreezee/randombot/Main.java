@@ -1,5 +1,6 @@
 package fr.loysofreezee.randombot;
 
+import fr.loysofreezee.randombot.listeners.CommandListener;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -15,6 +16,7 @@ public class Main {
         try {
             jda = new JDABuilder(AccountType.BOT)
                     .setToken("MjkyNzU1MzIwNTMzNTQ5MDY3.C68pNQ.bwsLdm4UVyDyLFhTWQXYtDnrX4E")
+                    .addListener(new CommandListener())
                     .buildBlocking();
         }
         catch(LoginException e){                //Authentication Problem
