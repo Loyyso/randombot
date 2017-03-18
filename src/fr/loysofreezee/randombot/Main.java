@@ -18,15 +18,12 @@ public class Main {
                     .setToken("MjkyNzU1MzIwNTMzNTQ5MDY3.C68pNQ.bwsLdm4UVyDyLFhTWQXYtDnrX4E")
                     .addListener(new CommandListener())
                     .buildBlocking();
-        }
-        catch(LoginException e){                //Authentication Problem
+        } catch(LoginException e){                //Authentication Problem
             e.printStackTrace();
             System.out.println("Connection failed");
-        }
-        catch(InterruptedException e){          //buildBlocking waiting interrupted
+        } catch(InterruptedException e){          //buildBlocking waiting interrupted
             e.printStackTrace();
-        }
-        catch(RateLimitedException e) {          //Too much simultaneous logins
+        } catch(RateLimitedException e) {          //Too much simultaneous logins
             e.printStackTrace();
         }
     }
