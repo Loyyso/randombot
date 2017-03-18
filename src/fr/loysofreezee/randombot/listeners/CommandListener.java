@@ -9,7 +9,8 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 public class CommandListener extends ListenerAdapter {
 
-    public void onMessageRecieved(MessageReceivedEvent event) {
+    @Override
+    public void onMessageReceived(MessageReceivedEvent event) {
         JDA jda = event.getJDA();
         long responseNumber = event.getResponseNumber();
 
