@@ -9,21 +9,18 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import javax.security.auth.login.LoginException;
 
 public class Main {
-    public static JDA jda;
 
     public static void main(String args[]) {
         //JDA connection
         try {
-            jda = new JDABuilder(AccountType.BOT)
-                    .setToken("MjkyNzU1MzIwNTMzNTQ5MDY3.C68pNQ.bwsLdm4UVyDyLFhTWQXYtDnrX4E")
+            JDA jda = new JDABuilder(AccountType.BOT)
+                    .setToken(args[0])
                     .addListener(new CommandListener())
                     .buildBlocking();
         } catch(LoginException e){                //Authentication Problem
             e.printStackTrace();
             System.out.println("Connection failed");
-        } catch(InterruptedException e){          //buildBlocking waiting interrupted
-            e.printStackTrace();
-        } catch(RateLimitedException e) {          //Too much simultaneous logins
+        } catch(InterruptedException | RateLimitedException e){          //buildBlocking waiting interrupted
             e.printStackTrace();
         }
     }
