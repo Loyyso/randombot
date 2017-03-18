@@ -1,4 +1,4 @@
-package fr.loysofreezee.randombot;
+package fr.loysofreezee.randombot.listeners;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
