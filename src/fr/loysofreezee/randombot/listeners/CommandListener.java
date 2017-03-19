@@ -2,7 +2,9 @@ package fr.loysofreezee.randombot.listeners;
 
 import fr.loysofreezee.randombot.commands.Command;
 import fr.loysofreezee.randombot.commands.CommandRegisterer;
-import net.dv8tion.jda.core.JDA;
+import fr.loysofreezee.randombot.utils.log.Log;
+import fr.loysofreezee.randombot.utils.log.LogFlag;
+import fr.loysofreezee.randombot.utils.log.LogType;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -11,23 +13,22 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        JDA jda = event.getJDA();
-        long responseNumber = event.getResponseNumber();
-
+        assert (!event.getAuthor().isBot());
         User author = event.getAuthor();
-        Message message = event.getMessage();
         MessageChannel channel = event.getChannel();
-
-        String msg = message.getContent();
-
-        boolean bot = author.isBot();
+        String msg = event.getMessage().getContent();
 
         for (Command command: CommandRegisterer.getCommands()) {
-            if (event.getMessage().getContent().contains("!" + command.getCommandName()) && !bot) {
+            if ((msg + " ").contains("!" + command.getCommandName() + " ")) {
                 String result = command.run(event);
-                if(!result.equals("")) {
+                if (!result.equals("")) {
                     channel.sendMessage(result).queue();
                 }
+
+                // LOG
+                String logResult = result;
+                if (logResult.length() > 50) logResult = logResult.substring(50, logResult.length());
+                Log.log(author.getName() + " sent " + command.getCommandName() + ":\n\t" + logResult, LogType.INF, LogFlag.CMD, LogFlag.PBL);
             }
         }
 
