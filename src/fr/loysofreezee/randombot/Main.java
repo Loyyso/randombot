@@ -2,7 +2,6 @@ package fr.loysofreezee.randombot;
 
 import fr.loysofreezee.randombot.listeners.CommandListener;
 import fr.loysofreezee.randombot.utils.log.Log;
-import fr.loysofreezee.randombot.utils.log.LogFlags;
 import fr.loysofreezee.randombot.utils.log.LogType;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -24,12 +23,12 @@ public class Main {
                     .buildBlocking();
         } catch (LoginException e) { //Authentication Problem
             e.printStackTrace();
-            Log.log(LogType.FTL, new LogFlags[]{ LogFlags.LGN }, "Connection failed");
+            Log.log(LogType.FATAL, new String[] { "Login" }, "Connection failed");
         } catch (InterruptedException | RateLimitedException e) { // buildBlocking waiting interrupted
             e.printStackTrace();
-            Log.log(LogType.FTL, new LogFlags[] {}, e.getMessage());
+            Log.log(LogType.FATAL, new String[] {}, e.getMessage());
         } finally {
-            Log.log(LogType.INF, new LogFlags[] { LogFlags.LGN }, "Successfully connected");
+            Log.log(LogType.INFO, new String[] { "Login" }, "Successfully connected");
         }
     }
 }

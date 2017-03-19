@@ -6,14 +6,17 @@ import static java.lang.System.err;
 import static java.lang.System.out;
 
 public enum LogType {
-    INF(out),
-    ERR(err),
-    FTL(err);
+    INFO(out, "Info"),
+    ERROR(err, "Error"),
+    FATAL(err, "Fatal");
 
     private PrintStream outputStream;
-    LogType(PrintStream outputStream) {
+    private String fullName;
+    LogType(PrintStream outputStream, String fullName) {
         this.outputStream = outputStream;
+        this.fullName = fullName;
     }
 
     public PrintStream getOutputStream() { return outputStream; }
+    public String getFullName() { return fullName; }
 }
