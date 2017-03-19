@@ -7,4 +7,4 @@ Randombot is a bot doing random things!
 - Wip "!friends" command that returns "WIP"
 
 ## Dependencies
-- JDA, a Discord API for Java programs.
+- [JDA](https://github.com/DV8FromTheWorld/JDA), a Discord API for Java programs.
