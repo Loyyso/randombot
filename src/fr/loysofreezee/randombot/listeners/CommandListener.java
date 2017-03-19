@@ -2,47 +2,44 @@ package fr.loysofreezee.randombot.listeners;
 
 import fr.loysofreezee.randombot.commands.Command;
 import fr.loysofreezee.randombot.commands.CommandRegisterer;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.*;
+import fr.loysofreezee.randombot.utils.log.Log;
+import fr.loysofreezee.randombot.utils.log.LogType;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+
+import static fr.loysofreezee.randombot.commands.Command.COMMAND_PREFIX;
 
 public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        JDA jda = event.getJDA();
-        long responseNumber = event.getResponseNumber();
+        if (event.getAuthor().isBot()) return;
 
         User author = event.getAuthor();
-        Message message = event.getMessage();
         MessageChannel channel = event.getChannel();
+        String message = event.getMessage().getContent();
 
-        String msg = message.getContent();
+        boolean log = false;
+        if (!event.getAuthor().isBot()) {
+            for (Command command: CommandRegisterer.getCommands()) {
+                if ((message + " ").contains(COMMAND_PREFIX + command.getCommandName() + " ")) {
+                    String result = command.run(event);
+                    if (!result.equals("")) {
+                        channel.sendMessage(result).queue();
+                    }
 
-        boolean bot = author.isBot();
-
-        for (Command command: CommandRegisterer.getCommands()) {
-            if (event.getMessage().getContent().contains("!" + command.getCommandName()) && !bot) {
-                String result = command.run(event);
-                if(!result.equals("")) {
-                    channel.sendMessage(result).queue();
+                    // Log
+                    log = true;
+                    String toLog = result;
+                    if (toLog.length() >= 50) toLog = toLog.substring(50, toLog.length()) + "...";
+                    Log.log(LogType.INFO, new String[] { "Command" },
+                            author.getName() + " ran " + COMMAND_PREFIX + command.getCommandName() + ":\n\t  > " + toLog.replace("\n", "\n\t\t"));
                 }
             }
         }
 
-        if (event.isFromType(ChannelType.TEXT)) {
-            Guild guild = event.getGuild();
-            TextChannel textChannel = event.getTextChannel();
-            Member member = event.getMember();
-
-            String name = member.getEffectiveName();
-
-            System.out.printf("[%s]#%s <%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
-        } else if (event.isFromType(ChannelType.PRIVATE)) {
-            PrivateChannel privateChannel = event.getPrivateChannel();
-
-            System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
-        }
+        if (!log) Log.logMessage(event.getMessage());
     }
 }
